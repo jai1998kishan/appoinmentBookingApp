@@ -74,7 +74,7 @@ function showuseronscreen(user) {
   const parentNode = document.getElementById("listOfUsers");
   const childHTML=`<li id=${user._id}> ${user.name} - ${user.email} - ${user.phoneNumber}
                     <button onclick=deleteUser('${user._id}')> Delete User</button>    
-                    <button onclick=editsUserDetails('${user._id}','${user.name}','${user.phoneNumber}')> Edit User</button>    
+                    <button onclick=editsUserDetails('${user._id}','${user.name}','${user.email}','${user.phoneNumber}')> Edit User</button>    
                     </li>`
 
   // const childHTML=`<li id=${user.email}> ${user.name} - ${user.email} - ${user.phoneNumber}
@@ -87,13 +87,21 @@ function showuseronscreen(user) {
 
 
 //edit User
-function editsUserDetails(emailId,name,phoneNumber){
-    
+function editsUserDetails(userId,name,emailId,phoneNumber){
+  
     document.getElementById('email').value=emailId;
     document.getElementById('username').value=name;
     document.getElementById('phoneNumber').value=phoneNumber;
 
-    deleteUser(emailId)
+    deleteUser(userId)
+
+    // axios.put(`https://crudcrud.com/api/11fefc659fb649758d39a6998a49a63a/appointmentData/${userId}`)
+    // .then((response)=>{
+    //   console.log(response)
+    // })
+    // .catch((err)=>{
+    //   console.log(err)
+    // })
 }
 
 function deleteUser(userId){
