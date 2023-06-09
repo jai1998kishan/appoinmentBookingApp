@@ -12,22 +12,22 @@
         <h1 style="text-align: center; ">Appointment Booking App Using Axios</h1>
     </header>
     
-    <form action="#" onsubmit="submitdetails(event)">
+    <form onsubmit="saveToLocalStorage(event)">
         
-        <label for="choose_expense">Name</label>
-        <input type="text" name="amount" id="expenses" placeholder="Your Name" autocomplete="on" required >
+        <label>Name</label>
+        <input type="ext" id="username" placeholder="Your Name" name="username" required >
 
-        <label for="choose_description">Email</label>
-        <input type="email" name="descriptionofItem" id="description" placeholder="abc@gmail.com" autocomplete="on" required>
+        <label>Email</label>
+        <input type="email" id="email" name="emailId" placeholder="abc@gmail.com" required>
 
-        <label for="Phone_Number">Phone</label>
-        <input type="tel" name="conactNumber" id="phoneNumber" placeholder="123456789" required>
+        <label>Phone</label>
+        <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="123456789" required>
 
         <button>Submit</button>
 
     </form>
 
-    <ul id="listofitems"></ul>
+    <ul id="listOfUsers"></ul>
 
     <script src="main.js"></script>
 

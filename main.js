@@ -1,18 +1,18 @@
-function submitdetails(event) {
+function saveToLocalStorage(event) {
   event.preventDefault();
-  const expenses = event.target.expenses.value;
-  const description = event.target.description.value;
+  const name = event.target.username.value;
+  const email = event.target.emailId.value;
   const phoneNumber = event.target.phoneNumber.value;
 
   const obj = {
-    expenses,
-    description,
+    name,
+    email,
     phoneNumber,
   };
 
   axios
     .post(
-      "https://crudcrud.com/api/79828dbb37c442218e9f5734087a0573/appointmentData",
+      "https://crudcrud.com/api/11fefc659fb649758d39a6998a49a63a/appointmentData",
       obj
     )
     .then((response) => {
@@ -25,17 +25,18 @@ function submitdetails(event) {
       console.log(err);
     });
 
-  // localStorage.setItem(obj.description,JSON.stringify(obj))   //this line store the appionment in the local storage
+  // localStorage.setItem(obj.email,JSON.stringify(obj))   //this line store the appionment in the local storage
   // showuseronscreen (obj)
 
   
 }
+
+
 window.addEventListener("DOMContentLoaded", () => {
     //down code is to get data from the network when the page get reload
     axios
       .get(
-        "https://crudcrud.com/api/79828dbb37c442218e9f5734087a0573/appointmentData"
-      )
+        "https://crudcrud.com/api/11fefc659fb649758d39a6998a49a63a/appointmentData")
       .then((response) => {
         console.log(response);
 
@@ -58,48 +59,60 @@ window.addEventListener("DOMContentLoaded", () => {
     //     showuseronscreen(userDetailsObj)
     // }
   });
-  
 
-function showuseronscreen(obj) {
-  // document.getElementById('expanses').value='';
-  // document.getElementById('description').value='';
-  // document.getElementById('phoneNumber').value='';
-  // if(localStorage.getItem(obj.expenses)!==null){
-  //     removeUserFromScreen(obj.email)
-  // }
 
-  const parentelem = document.getElementById("listofitems");
-  const childelem = document.createElement("li");
-  childelem.textContent =
-    obj.expenses + " - " + obj.description + " - " + obj.phoneNumber;
+function showuseronscreen(user) {
 
-  const deletebutton = document.createElement("input");
-  deletebutton.type = "button";
-  deletebutton.value = "Delete Input";
+  document.getElementById('email').value='';
+  document.getElementById('username').value='';
+  document.getElementById('phoneNumber').value='';
+  if(localStorage.getItem(user.email) !== null){
+      removeUserFromScreen(user.email)
+  }
 
-  deletebutton.onclick = () => {
-    localStorage.removeItem(obj.description);
-    parentelem.removeChild(childelem);
-  };
 
-  const editbutton = document.createElement("input");
-  editbutton.type = "button";
-  editbutton.value = "Edit Input";
+  const parentNode = document.getElementById("listOfUsers");
+  const childHTML=`<li id=${user._id}> ${user.name} - ${user.email} - ${user.phoneNumber}
+                    <button onclick=deleteUser('${user._id}')> Delete User</button>    
+                    <button onclick=editsUserDetails('${user._id}','${user.name}','${user.phoneNumber}')> Edit User</button>    
+                    </li>`
 
-  editbutton.onclick = () => {
-    localStorage.removeItem(obj.description);
-    parentelem.removeChild(childelem);
-    document.getElementById("expenses").value = obj.expenses;
-    document.getElementById("description").value = obj.description;
-    document.getElementById("phoneNumber").value = obj.phoneNumber;
-  };
+  // const childHTML=`<li id=${user.email}> ${user.name} - ${user.email} - ${user.phoneNumber}
+  //                   <button onclick=deleteUser('${user.email}')> Delete User</button>    
+  //                   <button onclick=editsUserDetails('${user.email}','${user.email}','${user.phoneNumber}')> Edit User</button>    
+  //                   </li>`     
 
-  childelem.appendChild(deletebutton);
-  childelem.appendChild(editbutton);
+   parentNode.innerHTML=parentNode.innerHTML+childHTML;  
+}
 
-  parentelem.appendChild(childelem);
 
-  expenses.value = "";
-  description.value = "";
-  phoneNumber.value = "";
+//edit User
+function editsUserDetails(emailId,name,phoneNumber){
+    
+    document.getElementById('email').value=emailId;
+    document.getElementById('username').value=name;
+    document.getElementById('phoneNumber').value=phoneNumber;
+
+    deleteUser(emailId)
+}
+
+function deleteUser(userId){
+    axios.delete(`https://crudcrud.com/api/11fefc659fb649758d39a6998a49a63a/appointmentData/${userId}`)
+        .then((response)=>{
+            removeUserFromScreen(userId)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    // console.log(emailId)
+    // localStorage.removeItem(emailId);
+    // removeUserFromScreen(emailId);
+}
+
+function removeUserFromScreen(userId){
+    const parentNode=document.getElementById('listOfUsers');
+    const childNodeToBeDeleted=document.getElementById(userId);
+    if(childNodeToBeDeleted){
+        parentNode.removeChild(childNodeToBeDeleted)
+    }
 }
